@@ -12,8 +12,16 @@ class ToDoListViewController: UITableViewController {
 
     var itemArray = ["Buy eggs", "Buy milk", "Buy Bread"]
     
+    let defaults = UserDefaults.standard   //one option for saving small bits of data
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //? is optional  ! is forced downcast
+        // use if let so that if there is a typo in the key, it won't crash
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String]{
+            itemArray = items
+        }
+        
     }
     
     //Tableview Datasource Methods
@@ -62,7 +70,8 @@ class ToDoListViewController: UITableViewController {
             //itemArray.append(textField.text ?? "New Item")
             //better to prevent it going through if empty
             
-            //
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray") //self because we are inside enclosure
+            
             self.tableView.reloadData()
             
         }
