@@ -10,8 +10,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-    let itemArray = ["Buy eggs", "Buy milk", "Buy Bread"]
-    
+    var itemArray = ["Buy eggs", "Buy milk", "Buy Bread"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +41,42 @@ class ToDoListViewController: UITableViewController {
         } else {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
+    }
+    
+    //add new items
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        //popup UIAlert controller
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title:"Add Item", style: .default){ (action) in
+            //what wil happen when user clicks the add button
+            //print(textField.text)
+            
+            //self because we are inside an 'in'. we have to tell it explicitly where the itemArray exists (inside the current class
+            self.itemArray.append(textField.text!) //forceunwrap is ok because a text field will never be nil.  it could be an empty string, but that's ok
+            // if we want a default value in case they leave it blank, it would be:
+            //itemArray.append(textField.text ?? "New Item")
+            //better to prevent it going through if empty
+            
+            //
+            self.tableView.reloadData()
+            
+        }
+        
+        alert.addAction(action)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+            
+            //print(alertTextField.text)
+        }
+        present(alert, animated: true, completion: nil)
         
     }
-
+    
 }
 
